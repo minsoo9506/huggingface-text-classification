@@ -9,3 +9,8 @@ __pycache__
 .python-version
 
 .env
+
+*.p
+*.pth
+
+log
