@@ -1,20 +1,20 @@
 import pytorch_lightning as pl
+import torch
 
 
 class LitBert(pl.LightningModule):
-    def __init__(self, model, crit, optimizer, config):
+    def __init__(self, model, crit, optimizer, scheduler):
         super().__init__()
         self.model = model
         self.crit = crit
         self.optimizer = optimizer
-        self.config = config
+        self.scheduler = scheduler
 
-    # def forward(self, x):
-    #     embedding = self.model(x)
-    #     return embedding
+    def forward(self, x):
+        return self.model(x)
 
     def configure_optimizers(self):
-        return self.optimizer
+        return [self.optimizer], [self.scheduler]
 
     def training_step(self, train_batch, batch_idx):
         x, y = train_batch["input_ids"], train_batch["labels"]
@@ -31,4 +31,5 @@ class LitBert(pl.LightningModule):
 
         y_hat = self.model(x, attention_mask=mask).logits
         loss = self.crit(y_hat, y)
-        self.log("valid_loss", loss)
+        acc = (torch.argmax(y_hat, dim=-1) == y).sum() / float(y.size(0))
+        self.log_dict({"valid_loss": loss, "valid_acc": acc})
