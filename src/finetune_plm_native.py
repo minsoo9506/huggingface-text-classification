@@ -9,16 +9,12 @@ import torch.optim as optim
 from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 from torch.utils.data import DataLoader
-from transformers import (
-    AdamW,
-    AlbertForSequenceClassification,
-    BertForSequenceClassification,
-    BertTokenizerFast,
-    PreTrainedTokenizer,
-    get_linear_schedule_with_warmup,
-)
+from transformers import (AdamW, AlbertForSequenceClassification,
+                          BertForSequenceClassification, BertTokenizerFast,
+                          PreTrainedTokenizer, get_linear_schedule_with_warmup)
 
-from data_load.dataset import TextClassificationDataset, TextClssificationCollator
+from data_load.dataset import (TextClassificationDataset,
+                               TextClssificationCollator)
 from lit_model.lit_bert import LitBert
 from utils.utils import read_text
 
